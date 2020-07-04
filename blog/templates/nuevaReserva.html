@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}
+Nueva reserva
+{% endblock title %}
+{% block content %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <div class="alert alert-danger" role="alert">
+        {{message}}
+    </div>
+    {% endfor %}
+</ul>
+{% endif %}
+<form id="formNuevaReserva">
+    {% csrf_token %}
+        <div class="form-group row">
+            <div class="col">
+                <label for="cancha">Cancha:</label>
+                <select class="form-control form-control-sm" id="cancha" name="cancha" required>
+                    <option hidden disabled selected value> -- selecciona una cancha -- </option>
+                    {% for c in canchas %}
+                    <option value="{{c.pk}}" {% if c.pk == r.cancha.pk %} selected {% endif %}>{{c.nombre}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col">
+                <label for="cliente">Cliente:</label>
+                <input class="form-control form-control-sm" type="text" name="cliente" id="cliente" value="{{reserva.cliente}}">
+            </div>
+        </div>
+    <div class="form-group">
+        <div class="form-row">
+            <div class="col">
+                <label for="empleado">empleado:</label>
+                <input class="form-control form-control-sm" type="text" name="empleado" id="empleado" value="{{reserva.empleado}}">
+            </div>
+            <div class="col">
+                <label for="fechaTurno">Turno:</label>
+                <input class="form-control form-control-sm" type="datetime-local" name="fechaTurno" id="fechaTurno"
+                    value="{{reserva.fecha_turno | date:'Y-m-d H:i' }}">
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-info">Agregar</button>
+</form>
+<script>
+    $(function () {
+        $('#formNuevaReserva').on('submit', function (e) {
+            e.preventDefault()
+            $.ajax({
+                url: "{% url 'nuevaReserva' %}",
+                type: "POST",
+                data: $('#formNuevaReserva').serialize(),
+                success: function (response) {
+                    if (response['ok'] == 'ok') {
+                        alert('reserva creada con exito!');
+                        document.location.href = "{% url 'listado' %}"
+                    }
+                    else if (response['ok'] == 'fecha') {
+                        alert('ya existe una reserva en esa fecha y hora')
+                    }
+                }
+            })
+        })
+    })
+</script>
+{% endblock content %}

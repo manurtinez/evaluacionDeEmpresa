@@ -1,0 +1,39 @@
+{% extends 'base.html' %} {% block title %} Listado {% endblock title %}
+{%block content %}
+<div style="margin: 0 auto">
+    <a class="btn btn-info" href="{% url 'nuevaReserva' %}">Agregar Reserva</a>
+    <a class="btn btn-info" href="{% url 'filtrarCesped' %}">Ver canchas con cesped sintetico</a>
+                    <a class="btn btn-info" href="{% url 'filtrarVestuario' %}">Ver canchas con vestuario</a>
+                    <a class="btn btn-info" href="{% url 'filtrarIlu' %}">Ver canchas con iluminacion</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Numero de cancha</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Codigo Interno</th>
+                <th scope="col">Tiene Vestuario</th>
+                <th scope="col">Tiene Iluminacion</th>
+                <th scope="col">Tiene Cesped Sintetico</th>
+                <th scope="col">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in canchas %}
+            <tr>
+                <td>{{c.pk}}</td>
+                <td>{{c.nombre}}</td>
+                <td>{{c.codInt}}</td>
+                <td>{% if c.vestuario %} SI {% else %} NO {% endif %}</td>
+                <td>{% if c.iluminacion %} SI {% else %} NO {% endif %}</td>
+                <td>{% if c.cespedSint %} SI {% else %} NO {% endif %}</td>
+                <td>
+                    <a class="btn btn-info" href="{% url 'detalleCancha' id=c.pk %}">Ver detalle</a>
+                    <!-- <button type="button" class="btn btn-info" data-toggle="modal" data-target="#nuevaReserva">Agregar
+                        Reserva</button> -->
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

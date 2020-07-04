@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}
+Detalle de {{cancha.nombre}}
+{% endblock title %}
+{% block content %}
+<div class="small-middle-container" style="background-color: lightgray; text-align: center;">
+    <h1>Detalle de <b>{{cancha.nombre}}</b></h1>
+    <h4>Codigo Interno: {{cancha.codInt}}</h4>
+    <h4>Tipo: {{cancha.tipo}}</h4>
+    <h4>Tiene Vestuario: {% if cancha.vestuario %} SI {% else %} NO {% endif %}</h4>
+    <h4>Tiene Iluminacion: {% if cancha.iluminacion %} SI {% else %} NO {% endif %}</h4>
+    <h4>Tiene Cesped Sintetico: {% if cancha.cespedSint %} SI {% else %} NO {% endif %}</h4>
+    <h1>Listado de Reservas</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Fecha y Hora</th>
+                <th scope="col">Fecha Turno</th>
+                <th scope="col">Cliente</th>
+                <th scope="col">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in reservas %}
+            <tr>
+                <td>{{r.fecha_reserva}}</td>
+                <td>{{r.fecha_turno}}</td>
+                <td>{{r.cliente}}</td>
+                <td>
+                    <a class="btn btn-info" href="{% url 'editarReserva' r.pk %}">Editar Reserva</a>
+                    <a class="btn btn-info" href="{% url 'eliminarReserva' r.pk %}" onclick="return confirm('seguro que queres eliminar esta reserva?')">Eliminar Reserva</a>
+                    <!-- <button class="btn btn-info" onclick="eliminarReserva('{{r.pk}}');">
+                        Borrar Reserva
+                    </button> -->
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+</script>
+{% endblock content %}
