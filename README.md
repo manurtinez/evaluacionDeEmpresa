@@ -1,4 +1,4 @@
-# evaluacionDevsar
+# evaluacionDeEmpresaDesconocida (?)
 app en django
 
 - create a virtual env in python: python3 venv myvenv
